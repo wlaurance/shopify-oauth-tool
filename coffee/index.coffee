@@ -27,9 +27,31 @@ fs.readFile __dirname + '/../package.json', (error, data)->
     .option('-n --shopname [string]', 'Shopname')
     .option('-i --client_id [string]', 'ClientId')
     .option('-c --scope [string]' , 'Scope - Defaults to All')
+    .option('-s --client_secret [string]', 'ClientSecret')
     .parse(process.argv)
   scope = get_scope program.scope
-  url = "https://#{program.shopname}.myshopify.com/admin/oauth/authorize?client_id=#{program.client_id}&scope=#{scope}"
-  console.log url
-
+  base = "https://#{program.shopname}.myshopify.com/admin/oauth"
+  url = base + "/authorize?client_id=#{program.client_id}&scope=#{scope}"
+  browsercmd = switch process.platform
+    when 'darwin' then 'open'
+    when 'linux' then 'xdg-open'
+  spawn browsercmd, [url]
+  rl = repl.createInterface
+    input:process.stdin
+    output:process.stdout
+  getTempToken = ->
+    rl.question "Copy the ?code param from the callback url here:", (temp_token) ->
+      if not temp_token? or temp_token is ''
+        return getTempToken()
+      request.post
+        url:base + "/access_token"
+        qs:
+          client_id:program.client_id
+          client_secret:program.client_secret
+          code:temp_token
+      , (error, req, body) ->
+        console.log error if error
+        console.log body
+        rl.close()
+  getTempToken()
 
