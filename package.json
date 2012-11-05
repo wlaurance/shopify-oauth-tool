@@ -1,0 +1,31 @@
+{
+  "name": "shopify-oauth-tool",
+  "version": "0.0.0",
+  "description": "shopify-oauth-tool ==================",
+  "main": "lib/index.js",
+  "bin": {
+    "shopify-oauth": "./bin/shopify-oauth"
+  },
+  "scripts": {
+    "test": "cake test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wlaurance/shopify-oauth-tool.git"
+  },
+  "keywords": [
+    "Shopify",
+    "node",
+    "oauth"
+  ],
+  "author": "Will S. Laurance",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "~1.0.5",
+    "request": "~2.11.4"
+  },
+  "devDependencies": {
+    "should": "~1.2.1",
+    "mocha": "~1.6.0"
+  }
+}
