@@ -1,6 +1,6 @@
 {
   "name": "shopify-oauth-tool",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "shopify-oauth-tool ==================",
   "main": "lib/index.js",
   "bin": {
