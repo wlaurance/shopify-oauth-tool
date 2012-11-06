@@ -3,6 +3,7 @@ program = require 'commander'
 {spawn} = require 'child_process'
 request = require 'request'
 repl = require 'readline'
+tokenmachine = require 'browser-token-machine'
 
 get_scope = (given)->
   return given if given? and given isnt ''
@@ -32,15 +33,8 @@ fs.readFile __dirname + '/../package.json', (error, data)->
   scope = get_scope program.scope
   base = "https://#{program.shopname}.myshopify.com/admin/oauth"
   url = base + "/authorize?client_id=#{program.client_id}&scope=#{scope}"
-  browsercmd = switch process.platform
-    when 'darwin' then 'open'
-    when 'linux' then 'xdg-open'
-  spawn browsercmd, [url]
-  rl = repl.createInterface
-    input:process.stdin
-    output:process.stdout
-  getTempToken = ->
-    rl.question "Copy the ?code param from the callback url here:", (temp_token) ->
+  getTempToken = ()->
+    tokenmachine url, "Copy the ?code param from the callback url here:", (temp_token) ->
       if not temp_token? or temp_token is ''
         return getTempToken()
       request.post
@@ -52,6 +46,5 @@ fs.readFile __dirname + '/../package.json', (error, data)->
       , (error, req, body) ->
         console.log error if error
         console.log body
-        rl.close()
   getTempToken()
 
