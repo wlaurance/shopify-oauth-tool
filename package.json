@@ -23,7 +23,7 @@
   "dependencies": {
     "commander": "~1.0.5",
     "request": "~2.11.4",
-    "browser-token-machine": "0.0.3"
+    "browser-token-machine": "0.0.4"
   },
   "devDependencies": {
     "should": "~1.2.1",
